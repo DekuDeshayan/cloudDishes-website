@@ -129,7 +129,7 @@ export default {
 
       }).catch((err)=>{
         console.log(err);
-        this.errorMessage = "Dados Inválidos.";
+        this.errorMessage = "Login Invalido.";
       }).then(()=>this.loading=false);
 
     }

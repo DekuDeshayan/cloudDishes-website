@@ -166,8 +166,8 @@
                   </a>
                   <div class="dropdown-menu dropdown-menu-right shadow-sm border-0">
                     <a class="dropdown-item" href="/profile"><i class="icofont-user-alt-7"></i> Perfil</a>
-                    <a class="dropdown-item" href="/orders"><i class="icofont-truck-loaded"></i> Encomendas</a>
-                    <a class="dropdown-item" href="/reservations"><i class="icofont-fork-and-knife"></i> Reservas</a>
+                    <a class="dropdown-item" href="/profile#orders"><i class="icofont-truck-loaded"></i> Encomendas</a>
+                    <a class="dropdown-item" href="/profile#reservations"><i class="icofont-fork-and-knife"></i> Reservas</a>
                   </div>
               </li>
               <!-- <li class="nav-item dropdown dropdown-cart" active-class="active">

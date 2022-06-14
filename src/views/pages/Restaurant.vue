@@ -176,104 +176,103 @@
                </div>
                <div class="col-md-4">
                   <div class="generator-bg rounded shadow-sm mb-4 p-4 osahan-cart-item">
-
-                     <form v-on:submit.prevent="saveRestaurant">
-                     
-                        <h5 class="mb-1 text-white">O seu pedido</h5>
-                        <p class="mb-4 text-white">6 ITEMS</p>
-                        <div class="bg-white rounded shadow-sm mb-2">
-                           <div class="gold-members p-2 border-bottom" v-for="(cartItem, index) in cart" :key="index">
-                              <p class="text-gray mb-0 float-right ml-2">{{cartItem.price}}</p>
-                              <span class="count-number float-right">
-                              <input class="count-number-input" type="text" value="1" readonly="">
-                              </span>
-                              <div class="media">
-                                 <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
-                                 <div class="media-body">
-                                    <p class="mt-1 mb-0 text-black">{{cartItem.name}}</p>
-                                 </div>
+                                      
+                     <h5 class="mb-1 text-white">O seu pedido</h5>
+                     <p class="mb-4 text-white">6 ITEMS</p>
+                     <div class="bg-white rounded shadow-sm mb-2">
+                        <div class="gold-members p-2 border-bottom" v-for="(cartItem, index) in cartitem" :key="index">
+                           <p class="text-gray mb-0 float-right ml-2">{{cartItem.subtotal}}</p>
+                           <span class="count-number float-right">
+                           {{ cartItem.qty }}
+                           </span>
+                           <div class="media">
+                              <div class="mr-2"><i class="icofont-ui-press text-success food-item"></i></div>
+                              <div class="media-body">
+                                 <p id="orderDesc" class="mt-1 mb-0 text-black">{{cartItem.description}}</p>
                               </div>
                            </div>
                         </div>
-                        <div class="mb-2 bg-white rounded p-2 clearfix">
-                           <img class="img-fluid float-left" src="../../../public/plugins/osahan/img/wallet-icon.png">
-                           <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-danger">{{subtotal}}</span></h6>
+                     </div>
+                     <div class="mb-2 bg-white rounded p-2 clearfix">
+                        <img class="img-fluid float-left" src="../../../public/plugins/osahan/img/wallet-icon.png">
+                        <h6 class="font-weight-bold text-right mb-2">Subtotal : <span class="text-danger">{{subtotal}}</span></h6>
+                     </div>
+
+                     <p class="mb-2 text-white">Escolha  o local  de Entrega</p>
+                     <div class="mb-2 bg-white rounded p-2 clearfix">
+
+                        <div class="form-group">
+                              <label >Alcunha (Ex: casa, trabalho, outro...)</label>
+                           <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                              </div>
+                              <input v-model="deliveryAddress.nickname" type="text" :class="`form-control ${v$.deliveryAddress.nickname.$errors.length ? 'is-invalid' : ''}`"   placeholder="Alcunha"  name="nickname" id="nickname">
+                           </div>
+                           <div class="input-errors" v-for="error of v$.deliveryAddress.nickname.$errors" :key="error.$uid">
+                           <span class="inval">{{ error.$message }}</span>
+                           </div>
                         </div>
 
-                        <p class="mb-2 text-white">Escolha  o local  de Entrega</p>
-                        <div class="mb-2 bg-white rounded p-2 clearfix">
-
-                           <div class="form-group">
-                               <label >Alcunha (Ex: casa, trabalho, outro...)</label>
-                              <div class="input-group mb-3">
-                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                                 </div>
-                                 <input v-model="deliveryAddress.nickname" type="text" :class="`form-control ${v$.formData.nickname.$errors.length ? 'is-invalid' : ''}`"   placeholder="nickname"  name="nickname" id="nickname">
+                        <div class="form-group">
+                              <label >Detalhes do local de entrega</label>
+                           <div class="input-group mb-3">
+                              <div class="input-group-prepend">
+                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                               </div>
-                              <div class="input-errors" v-for="error of v$.formData.nickname.$errors" :key="error.$uid">
-                              <span class="inval">{{ error.$message }}</span>
-                              </div>
+                              <input v-model="deliveryAddress.completeAddress" type="text" :class="`form-control ${v$.deliveryAddress.completeAddress.$errors.length ? 'is-invalid' : ''}`"   placeholder="Ex:rua,avenida,casa nr123, andar nr"  name="completeaddress" id="completeaddress">
                            </div>
-
-                           <div class="form-group">
-                               <label >Detalhes do local de entrega</label>
-                              <div class="input-group mb-3">
-                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                                 </div>
-                                 <input v-model="deliveryAddress.completeAddress" type="text" :class="`form-control ${v$.formData.completeAddress.$errors.length ? 'is-invalid' : ''}`"   placeholder="endereco completo"  name="completeaddress" id="completeaddress">
-                              </div>
-                              <div class="input-errors" v-for="error of v$.formData.completeAddress.$errors" :key="error.$uid">
-                              <span class="inval">{{ error.$message }}</span>
-                              </div>
+                           <div class="input-errors" v-for="error of v$.deliveryAddress.completeAddress.$errors" :key="error.$uid">
+                           <span class="inval">{{ error.$message }}</span>
                            </div>
+                        </div>
 
-                           <div class="form-group">
-                              <label >Province</label>
-                              <div class="input-group mb-3">
-                                 <select :class="`form-control select2_prov select2bs4 ${v$.formData.province.$errors.length ? 'is-invalid' : ''}`"   name="province" id="province" >
-                                    <option  disabled selected>Choose a Province</option>
-                                    <option v-for="(province, index) in provinces" :key="index" :value="province.id"> {{province.name.replace(/_/g, ' ')}}
+                        <div class="form-group">
+                           <label >Província</label>
+                           <div class="input-group mb-3">
+                              <select :class="`form-control select2_prov ${v$.deliveryAddress.province.$errors.length ? 'is-invalid' : ''}`"   name="province" id="province" >
+                                 <option  disabled selected>Escolha a Provincia</option>
+                                 <option v-for="(province, index) in provinces" :key="index" :value="province.id"> {{province.name.replace(/_/g, ' ')}}
+                                 </option>
+                              </select>
+                           </div>
+                           <div class="input-errors" v-for="error of v$.deliveryAddress.province.$errors" :key="error.$uid">
+                           <span class="inval">{{ error.$message }}</span>
+                           </div>
+                        </div>
+
+                        <div class="form-group">
+                           <label >Distrito</label>
+                           <div class="input-group mb-3">
+                              <select  :class="`form-control select2_district ${v$.deliveryAddress.district.$errors.length ? 'is-invalid' : ''}`"   name="district" id="district" >
+                                 <option disabled selected>Escolha o Districto</option>
+                                 <option v-for="(district, index) in districts" :key="index" :value="district.id">{{district.name.replace(/_/g, ' ')}}
                                     </option>
-                                 </select>
-                              </div>
-                              <div class="input-errors" v-for="error of v$.formData.province.$errors" :key="error.$uid">
-                              <span class="inval">{{ error.$message }}</span>
-                              </div>
+                              </select>
                            </div>
-
-                           <div class="form-group">
-                              <label >District</label>
-                              <div class="input-group mb-3">
-                                 <select  :class="`form-control select2_district select2bs4 ${v$.formData.district.$errors.length ? 'is-invalid' : ''}`"   name="district" id="district" >
-                                    <option disabled selected>Choose a District</option>
-                                    <option v-for="(district, index) in districts" :key="index" :value="district.id">{{district.name.replace(/_/g, ' ')}}
-                                       </option>
-                                 </select>
-                              </div>
-                              <div class="input-errors" v-for="error of v$.formData.district.$errors" :key="error.$uid">
-                              <span class="inval">{{ error.$message }}</span>
-                              </div>
-                           </div>
-
-                           <div class="form-group">
-                              <label >Neighborhood</label>
-                              <div class="input-group mb-3">
-                                 <select :class="`form-control select2_neigh select2bs4 ${v$.formData.neighborhood.$errors.length ? 'is-invalid' : ''}`"   name="neighborhood" id="neighborhood" >
-                                    <option disabled selected>Choose a Neighborhood</option>
-                                       <option v-for="(neighborhood, index) in neighborhoods" :key="index" :value="neighborhood.id">{{neighborhood.name.replace(/_/g, ' ')}}
-                                       </option>
-                                 </select>
-                              </div>
-                              <div class="input-errors" v-for="error of v$.formData.neighborhood.$errors" :key="error.$uid">
-                              <span class="inval">{{ error.$message }}</span>
-                              </div>
+                           <div class="input-errors" v-for="error of v$.deliveryAddress.district.$errors" :key="error.$uid">
+                           <span class="inval">{{ error.$message }}</span>
                            </div>
                         </div>
 
-                        <button class="btn btn-success btn-block btn-lg" @click="submitted = true">Enviar Pedido <i class="icofont-long-arrow-right"></i></button>
-                     </form>
+                        <div class="form-group">
+                           <label >Bairro</label>
+                           <div class="input-group mb-3">
+                              <select :class="`form-control select2_neigh ${v$.deliveryAddress.neighborhood.$errors.length ? 'is-invalid' : ''}`"   name="neighborhood" id="neighborhood" >
+                                 <option disabled selected>Escolha o bairro</option>
+                                    <option v-for="(neighborhood, index) in neighborhoods" :key="index" :value="neighborhood.id">{{neighborhood.name.replace(/_/g, ' ')}}
+                                    </option>
+                              </select>
+                           </div>
+                           <div class="input-errors" v-for="error of v$.deliveryAddress.neighborhood.$errors" :key="error.$uid">
+                           <span class="inval">{{ error.$message }}</span>
+                           </div>
+                        </div>
+                     </div>
+
+                     <button class="btn btn-success btn-block btn-lg" @click="SaveOrder()" :disabled="loading">
+                           Enviar Pedido <i class="icofont-long-arrow-right"></i>
+                     </button>
                   </div>
                </div>
             </div>
@@ -290,9 +289,11 @@
     </section>
 </template>
 <script>
+import vuex from 'vuex';
 import osahan_custom_js from  '../../../public/plugins/osahan/js/custom';
 import RestaurantService from '@/services/RestaurantService';
 import MealService from '../../services/MealService';
+import OrderService from '../../services/OrderService';
 import useVuelidate from '@vuelidate/core';
 import Province from '../../models/enums/Province';
 import District from '../../models/enums/District';
@@ -307,18 +308,23 @@ export default {
   props: {},
   data() {
     return {
+      loading:false,
       restaurant: [],
       mealList: [],
-      cart: [],
+      cartitem: [],
       mealQuantity:1,
       subtotal:0,
+      order: {
+         description: this.description,
+         subtotal: this.subtotal
+      },
       deliveryAddress: {
         id:this.id,
         province:this.province,
         district:this.district,
         neighborhood:this.neighborhood, 
         completeAddress:this.completeAddress,
-        nickname: this.nickname,
+        nickname: this.nickname
       },
       provinces: Province,
       districts: District,
@@ -327,10 +333,7 @@ export default {
   },
    validations() {
     return {
-      formData: {
-        name: {
-           required: helpers.withMessage('required', required)
-        },
+      deliveryAddress: {
         province: {
            required: helpers.withMessage('required', required)
         },
@@ -376,31 +379,82 @@ export default {
     osahan_custom_js();
   },
   beforeDestroy() {},
+  computed: {
+      ...vuex.mapGetters(['currentUser']),
+  },
   methods: {
-
+   getSubtotal() {
+      this.subtotal = this.cartitem.reduce((a, b) => a + parseFloat(b.subtotal), 0)
+   },
    addToCart(meal){
 
-      var findProduct = this.cart.find(o => o.id === meal.id);
+      var findProduct = this.cartitem.find(o => o.id === meal.id);
 
       if(findProduct){
          this.mealQuantity+=1;
-         
-         this.subtotal = meal.price*=this.mealQuantity;
-
-         console.log(this.mealQuantity);
-         console.log(meal.price);
-         console.log(this.cart)
+         this.cartitem.map((item, index) => {
+            if(item.id === findProduct.id) {
+               this.cartitem[index] = {...item, qty: ++item.qty, subtotal: item.subtotal + parseFloat(item.price)}
+            }
+         })
       }else{
-         this.cart.push(meal);
-         this.subtotal = meal.price*=this.mealQuantity;
-         console.log(this.cart)
+         this.cartitem.push({...meal, qty: 1, subtotal: meal.price});
       }
+      this.getSubtotal()
+   },
+   async SaveOrder(){
+      const result = await this.v$.$validate();
+      if (!result) {
+         return
+      }
+      
+      this.loading=true;
+      if(!this.currentUser?.id){
+         alert("Voce precisa fazer login para efetuar um pedido!");
+         return;
+      }
+      
+      let orderDesc = document.getElementById('orderDesc').innerHTML;
+
+      this.order.description=orderDesc;
+      this.order.subtotal=this.subtotal;
+
+      OrderService.saveOrder(this.order, this.deliveryAddress, this.cartitem).then((response)=>{
+   
+         if(response.status===201){
+            alert("pedido efetuado com sucesso")
+         }
+         console.log(response.data);
+
+      }).catch((err)=>{
+
+         console.log(err);
+
+      }).then(()=>this.loading=false);
+
+
    }
+
 
   }
 }
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+
+.inval{
+
+width: 100%;
+margin-top: .25rem;
+font-size: 80%;
+color: #dc3545;
+}
+
+.input-errors{
+  margin-top: -18px;
+}
+
+
+</style>
 
 

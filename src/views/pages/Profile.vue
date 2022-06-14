@@ -7,28 +7,28 @@
           <div class="osahan-account-page-right shadow-sm bg-white p-4 h-100">
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                <h4 class="font-weight-bold mt-0 mb-4">Past Orders</h4>
-                <div class="bg-white card mb-4 order-list shadow-sm">
+                <h4 class="font-weight-bold mt-0 mb-4">Os Meus Pedidos</h4>
+                <div class="bg-white card mb-4 order-list shadow-sm" v-for="(orders, index) in orderList" :key="index">
                   <div class="gold-members p-4">
                       <a href="#">
                         <div class="media">
-                          <img class="mr-4" src="../../../public/plugins/osahan/img/3.png" alt="Generic placeholder image">
+                          <img class="mr-4" src="../../../public/plugins/osahan/img/cart.jpg" alt="Generic placeholder image">
                           <div class="media-body">
-                              <span class="float-right text-info">Delivered on Mon, Nov 12, 7:18 PM <i class="icofont-check-circled text-success"></i></span>
+                              <span class="float-right text-info">Pedido feito em {{new Date(orders.orderTime).toUTCString()}} <i class="icofont-check-circled text-success"></i></span>
                               <h6 class="mb-2">
-                            <a href="detail.html" class="text-black">Gus's World Famous Fried Chicken
+                            <a href="detail.html" class="text-black">
                             </a></h6>
-                            <p class="text-gray mb-1"><i class="icofont-location-arrow"></i> 730 S Mendenhall Rd, Memphis, TN 38117, USA
+                            <p class="text-gray mb-1"><i class="icofont-location-arrow"></i> {{orders.orderdeliveryaddress.completeAddress}}
                             </p>
-                            <p class="text-gray mb-3"><i class="icofont-list"></i> ORDER #25102589748 <i class="icofont-clock-time ml-2"></i> Mon, Nov 12, 6:26 PM</p>
-                            <p class="text-dark">Veg Masala Roll x 1, Veg Burger x 1, Veg Penne Pasta in Red Sauce x 1
+                            <p class="text-gray mb-3"><i class="icofont-list"></i> ORDER #{{orders.id}} <i class="icofont-clock-time ml-2"></i> {{new Date(orders.orderTime).toDateString()}}</p>
+                            <p class="text-dark" v-for="(descr,ind) in orders.meal" :key="ind">{{descr.description}} : {{descr.price}} MZN
                             </p>
                             <hr>
                             <div class="float-right">
-                            <a class="btn btn-sm btn-outline-primary" href="#"><i class="icofont-headphone-alt"></i> HELP</a>
-                            <a class="btn btn-sm btn-primary" href="detail.html"><i class="icofont-refresh"></i> REORDER</a>
+                            <a class="btn btn-sm btn-outline-primary" href="#">STATUS</a>
+                            <a class="btn btn-sm btn-primary" href="#"><i class="icofont-clock-time ml-2"></i> {{orders.request.requestStatus}}</a>
                             </div>
-                            <p class="mb-0 text-black text-primary pt-2"><span class="text-black font-weight-bold"> Total Paid:</span>  $300
+                            <p class="mb-0 text-black text-primary pt-2"><span class="text-black font-weight-bold"> Subtotal:</span>  {{orders.subtotal}} MZN
                             </p>
                           </div>
                         </div>
@@ -81,14 +81,24 @@
 
 <script>
 import ProfileSidebar from '../layout/ProfileSidebar.vue';
+import OrderService from '@/services/OrderService';
 export default {
   name: 'Profile',
   components: {ProfileSidebar},
   props: {},
   data() {
-    return {}
+    return {
+      orderList:[]
+    }
   },
-  mounted() {},
+  mounted() {
+
+    OrderService.findAllOrdersOfUser().then((response)=>{
+      this.orderList = response.data;
+      console.log(this.orderList);
+    });
+
+  },
   beforeDestroy() {},
   methods: {}
 }
