@@ -393,6 +393,7 @@ export default {
       if(findProduct){
          this.mealQuantity+=1;
          this.cartitem.map((item, index) => {
+            //if e found the product just increase the quantity and the subtotal
             if(item.id === findProduct.id) {
                this.cartitem[index] = {...item, qty: ++item.qty, subtotal: item.subtotal + parseFloat(item.price)}
             }
